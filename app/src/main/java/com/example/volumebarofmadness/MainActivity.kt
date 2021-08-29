@@ -13,6 +13,7 @@ import com.example.volumebarofmadness.databinding.ActivityMainBinding
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
+    private var time:Long = 200
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,38 +38,25 @@ class MainActivity : AppCompatActivity() {
 //            }
 //        }.start()
 
+        val xArr = arrayListOf(200f, 300f, 400f, 500f, 700f)
+        val yArr = arrayListOf(100f, 200f, 300f)
+        var xIndex = 0
+        var yIndex =0
         Thread{
             while(true){
                 runOnUiThread {
-                    ObjectAnimator.ofFloat(binding.ball, "translationX", 500f).apply {
-                        duration = 2000
-                        start()
-                    }.addListener(XFinishedListener())
-                    ObjectAnimator.ofFloat(binding.ball, "translationY", -100f).apply {
-                        duration = 1000
-                        start()
-                    }.addListener(YFinishedListener())
+                    var x = xArr[0]
+                    try{ x = xArr[xIndex++] }catch (e:IndexOutOfBoundsException){ xIndex=1 }
+                    var y = yArr[0]
+                    try{ y = yArr[yIndex++] }catch (e:IndexOutOfBoundsException){ yIndex=1 }
+
+                    binding.ball.translationX = 0f
+                    FireAnimation.start(binding.ball, 500, x, y)
                 }
-                Thread.sleep(4000)
+                Thread.sleep(500)
+
             }
         }.start()
 
-    }
-
-    inner class YFinishedListener() : AnimatorListenerAdapter() {
-        override fun onAnimationEnd(animation: Animator?) {
-            ObjectAnimator.ofFloat(binding.ball, "translationY", 0f).apply {
-                duration = 1000
-                start()
-            }
-        }
-    }
-    inner class XFinishedListener() : AnimatorListenerAdapter() {
-        override fun onAnimationEnd(animation: Animator?) {
-            ObjectAnimator.ofFloat(binding.ball, "translationX", 0f).apply {
-                duration = 2000
-                start()
-            }
-        }
     }
 }
