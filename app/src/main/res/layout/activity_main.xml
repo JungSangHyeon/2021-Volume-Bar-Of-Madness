@@ -29,7 +29,7 @@
         app:srcCompat="@drawable/clip" />
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/bar"
         android:layout_width="0dp"
         android:layout_height="4dp"
         android:layout_marginRight="64dp"

@@ -9,11 +9,12 @@ import android.os.Parcel
 import android.os.Parcelable
 import android.util.Log
 import com.example.volumebarofmadness.databinding.ActivityMainBinding
+import kotlin.math.abs
+import kotlin.math.tan
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-    private var time:Long = 200
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,39 +23,39 @@ class MainActivity : AppCompatActivity() {
 
         binding.frontVolum.drawable.level = 5000
 
-//        var level = 0
-//        var diff = 100
-//        var maxAngle = -45
-//        Thread{
-//            while(true){
-//                binding.frontVolum.drawable.level = level
-//                binding.frontVolum.rotation = (maxAngle*level/10000).toFloat()
-//                binding.backVolum.rotation = (maxAngle*level/10000).toFloat()
-//                Log.d("ASD", ""+binding.frontVolum.rotation)
-//                level+=diff
-//                if(level==10000) diff=-100
-//                else if(level==0) diff=100
-//                Thread.sleep(10)
-//            }
-//        }.start()
-
-        val xArr = arrayListOf(200f, 300f, 400f, 500f, 700f)
-        val yArr = arrayListOf(100f, 200f, 300f)
-        var xIndex = 0
-        var yIndex =0
         Thread{
             while(true){
-                runOnUiThread {
-                    var x = xArr[0]
-                    try{ x = xArr[xIndex++] }catch (e:IndexOutOfBoundsException){ xIndex=1 }
-                    var y = yArr[0]
-                    try{ y = yArr[yIndex++] }catch (e:IndexOutOfBoundsException){ yIndex=1 }
+                var level = 0
+                var maxAngle = -45
+                for(i in 0..100 step(10)) {
+                    for(j in 0..i){
+                        binding.frontVolum.drawable.level = level
+                        binding.frontVolum.rotation = (maxAngle*level/10000).toFloat()
+                        binding.backVolum.rotation = (maxAngle*level/10000).toFloat()
+                        level+=100
+                        Thread.sleep(10)
+                    }
+                    // Fire
+                    Log.d("ASD", "Fire LEVEL : $level")
+                    runOnUiThread {
+                        binding.ball.translationX = 0f
+                        val x = (binding.bar.width*level/10000).toFloat() + (binding.bar.x - binding.ball.x) - binding.ball.width/2
+                        var rad = abs(maxAngle*level/10000) * Math.PI/360;
+                        val y = (tan(rad) * x).toFloat()
+                        FireAnimation.start(binding.ball, 500, x, y)
+                    }
 
-                    binding.ball.translationX = 0f
-                    FireAnimation.start(binding.ball, 500, x, y)
+                    // Reset
+                    for(j in 0..i){
+                        binding.frontVolum.drawable.level = level
+                        binding.frontVolum.rotation = (maxAngle*level/10000).toFloat()
+                        binding.backVolum.rotation = (maxAngle*level/10000).toFloat()
+                        level-=100
+                        Thread.sleep(10)
+                    }
+                    // Wait Fire Finish
+                    Thread.sleep(500)
                 }
-                Thread.sleep(500)
-
             }
         }.start()
 
