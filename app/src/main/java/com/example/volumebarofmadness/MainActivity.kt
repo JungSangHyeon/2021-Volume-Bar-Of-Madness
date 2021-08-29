@@ -24,10 +24,17 @@ class MainActivity : AppCompatActivity() {
         binding.frontVolum.drawable.level = 0
         binding.clickArea.setOnTouchListener(FireListener())
 
+        binding.bar.viewTreeObserver.addOnGlobalLayoutListener(object : OnGlobalLayoutListener {
+            override fun onGlobalLayout() {
+                binding.bar.viewTreeObserver.removeOnGlobalLayoutListener(this)
+                val audioManager = applicationContext.getSystemService(AUDIO_SERVICE) as AudioManager
+                val nowVolume = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC)
 
-
-
-
+                Log.e("INITIAL VOLUME", "vol : $nowVolume")
+                val x = (binding.bar.width*nowVolume/audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC)).toFloat() + (binding.bar.x - binding.ball.x) - binding.ball.width/2
+                FireAnimation.start(binding.ball, 0, x, 0f)
+            }
+        })
 
     }
 
