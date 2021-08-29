@@ -42,19 +42,16 @@ class MainActivity : AppCompatActivity() {
     var maxAngle = -45
     var chargingThread: Thread? = null
     var reloadingThread: Thread? = null
-    var charging = false
 
     inner class FireListener : View.OnTouchListener{
         override fun onTouch(v: View?, event: MotionEvent?): Boolean {
                 if(event!!.action == MotionEvent.ACTION_DOWN){
                     reloadingThread?.interrupt()
                     startCharging()
-                    charging = true
                     return true
-                }else if (event!!.action == MotionEvent.ACTION_UP && charging){
+                }else if (event!!.action == MotionEvent.ACTION_UP){
                     chargingThread?.interrupt()
                     startReloading()
-                    charging = false
                     return true
                 }
             return false // no handle touch event
