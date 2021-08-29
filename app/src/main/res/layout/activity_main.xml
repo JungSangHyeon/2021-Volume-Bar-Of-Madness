@@ -10,12 +10,10 @@
         android:id="@+id/backVolum"
         android:layout_width="60dp"
         android:layout_height="60dp"
+        android:layout_marginLeft="64dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.2"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.5"
         app:srcCompat="@drawable/ic_baseline_volume_up_24"
         app:tint="@color/purple_200" />
 
@@ -29,5 +27,27 @@
         app:layout_constraintTop_toTopOf="@+id/backVolum"
         app:tint="@color/purple_500"
         app:srcCompat="@drawable/clip" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="0dp"
+        android:layout_height="4dp"
+        android:layout_marginRight="64dp"
+        android:layout_marginLeft="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/backVolum"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/round_rect" />
+
+    <ImageView
+        android:id="@+id/ball"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        app:layout_constraintBottom_toBottomOf="@+id/backVolum"
+        app:layout_constraintEnd_toEndOf="@+id/backVolum"
+        app:layout_constraintStart_toStartOf="@+id/backVolum"
+        app:layout_constraintTop_toTopOf="@+id/backVolum"
+        app:srcCompat="@drawable/oval" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
